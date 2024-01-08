@@ -13,7 +13,7 @@ Route::any(
   'mostafax\knet\KnetController@success'
 );
 
-Route::get(
+Route::any(
   'knet/error',
   'mostafax\knet\KnetController@error'
 );
