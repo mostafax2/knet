@@ -16,19 +16,19 @@ knet service for payment
 
 to install Package by composer
 
-```bash
+```composer
   composer require mostafax/knet
 ```
 
 to publish my package
 
-```bash
+```composer
   php artisan vendor:publish 
 ```
 
 add this keys to your env file
 
-```bash
+```env
 PAYMENT_PRODUCTION_URL=https://kpay.com.kw/kpg/PaymentHTTP.htm?param=paymentInit
 PAYMENT_TEST_URL=https://kpaytest.com.kw/kpg/PaymentHTTP.htm?param=paymentInit
 PAYMENT_TRANSPORT_ID=*****
@@ -44,7 +44,7 @@ PAYMENT_SUCCESS_URL=http://YOURDOMAIN.test/knet/success
 
 to init new link  
 
-```bash
+```php
 use Mostafax\Knet\KnetController;
 ```
 ```php
@@ -131,18 +131,8 @@ To run this project, you will need to add the following environment variables to
 Add badges from somewhere like: [shields.io](https://shields.io/)
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
-
-
-## Used By
-
-This project is used by the following companies:
-
-- Company 1
-- Company 2
-
-
+ 
+ 
 ## Tech Stack
 
 **Client:** Blade
@@ -150,16 +140,9 @@ This project is used by the following companies:
 **Server:** PHP, Laravel
 
 
-## Running Tests
-
-To run tests, run the following command
-
-```bash
-  npm run test
-```
-
+ 
 
 ## Support
 
-For support, email fake@fake.com or join our Slack channel.
+For support, email mostafa.m.elbiar@gmail.com.
 
