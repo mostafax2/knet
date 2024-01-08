@@ -1,0 +1,31 @@
+{
+    "name": "mostafax/knet",
+    "description": "knet payment service",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mostafax\\Knet\\": "src/" 
+        }
+    },
+    "authors": [
+        {
+            "name": "mostafa-elbayyar",
+            "email": "mostafa.m.elbiar@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mostafax\\Knet\\KnetServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-package-install": [
+            "php artisan vendor:publish --tag=Knet_Payment"
+        ]
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
