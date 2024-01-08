@@ -26,6 +26,6 @@
             "php artisan vendor:publish --tag=Knet_Payment"
         ]
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {}
 }
