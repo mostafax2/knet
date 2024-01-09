@@ -1,7 +1,7 @@
 {
     "name": "mostafax/knet",
     "description": "knet payment service",
-    "type": "project",
+    "type": "laravel-package",
     "license": "MIT",
     "autoload": {
         "psr-4": {
