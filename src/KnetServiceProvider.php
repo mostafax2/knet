@@ -11,8 +11,7 @@ class KnetServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        include __DIR__.'/routes/web.php';
-        $this->app->make('Mostafax\Knet\KnetController'); 
+        include __DIR__.'/routes/web.php'; 
     }
 
     /**
