@@ -3,11 +3,14 @@
 namespace Mostafax\Knet;
 
 use Mostafax\Knet\Models\Payment;
+use Mostafax\Knet\Requests\KnetRequest;
 use Illuminate\Http\Request;
  
 class Knet
 {
     private $url;
+    private $payment;
+
     public function __construct()
     {
         $this->url = env('APP_ENV') == 'local' ? env('PAYMENT_TEST_URL') : env('PAYMENT_PRODUCTION_URL');
@@ -56,18 +59,9 @@ class Knet
     }
 
 
-    public function init($data)
+    public function init(KnetRequest $request , $data)
     {
-        // $data = [
-        //     'amount' => 20,
-        //     'order_id' => 20,
-        //     'track_id' => rand(0, 9999),
-        //     'udf1' => null,
-        //     'udf2' => null,
-        //     'udf3' => null,
-        //     'udf4' => null,
-        //     'udf5' => null
-        // ]; 
+        $data = (is_array($data)) ? $data : $request->all();
         $this->payment->create($data);
         return $this->pay($data);
     }
