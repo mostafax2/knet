@@ -2,31 +2,76 @@
 
 namespace Mostafax\Knet;
 
-
-// use App\Models\Instalment;
-// use App\Models\Payment;
-// use App\Models\User;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Log;
 use Mostafax\Knet\Models\Payment;
-
+use Illuminate\Http\Request;
+ 
 class Knet
 {
     private $url;
-    private $payment;
     public function __construct()
     {
         $this->url = env('APP_ENV') == 'local' ? env('PAYMENT_TEST_URL') : env('PAYMENT_PRODUCTION_URL');
         $this->payment = new Payment;
     }
-    // PAYMENT_PRODUCTION_URL
-    // PAYMENT_TEST_URL
-    // PAYMENT_TRANSPORT_ID
-    // PAYMENT_TRANSPORT_PASSWORD
-    // PAYMENT_LANGUAGE
-    // PAYMENT_ACTION_CODE
-    // PAYMENT_SUCCESS_URL
-    // PAYMENT_ERROR_URL
+
+
+    
+    public function success(Request $request)
+    {
+        $Knet = new Knet();
+        $data = $Knet->handleError($request->all());
+        $this->payment->where('track_id',$data['trackid'])->update([ 
+            'payment_id'=>$data['paymentid'],  
+            'tran_id'=>$data['tranid'],
+            'ref_id'=>$data['ref'],
+            'status'=>1,
+            'result'=>$data['result'],
+            'udf1'=>$data['udf1'],
+            'udf2'=>$data['udf2'],
+            'udf3'=>$data['udf3'],
+            'udf4'=>$data['udf4'],
+            'udf5'=>$data['udf5'],
+        ]);
+          
+        return view('knet::success', compact('data'));
+    }
+
+    public function error(Request $request)
+    {
+        $Knet = new Knet();
+       return $data = $Knet->handleError($request->all());
+       $this->payment->where('track_id',$data['trackid'])->update([ 
+            'payment_id'=>$data['paymentid'],  
+            'tran_id'=>$data['tranid'],
+            'ref_id'=>$data['ref'],
+            'status'=>2,
+            'result'=>$data['result'],
+            'udf1'=>$data['udf1'],
+            'udf2'=>$data['udf2'],
+            'udf3'=>$data['udf3'],
+            'udf4'=>$data['udf4'],
+            'udf5'=>$data['udf5'],
+        ]);
+        return view('knet::error', compact('data'));
+    }
+
+
+    public function init($data)
+    {
+        // $data = [
+        //     'amount' => 20,
+        //     'track_id' => rand(0, 9999),
+        //     'udf1' => null,
+        //     'udf2' => null,
+        //     'udf3' => null,
+        //     'udf4' => null,
+        //     'udf5' => null
+        // ]; 
+        $this->payment->create($data);
+        return $this->pay($data);
+    }
+
+   
     /**
      * @param array $data
      * @return string
