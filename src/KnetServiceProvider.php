@@ -12,6 +12,7 @@ class KnetServiceProvider extends ServiceProvider
     public function register(): void
     {
         include __DIR__.'/routes/web.php'; 
+        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
 
     /**
