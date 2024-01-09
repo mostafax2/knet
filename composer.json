@@ -18,6 +18,9 @@
         "laravel": {
             "providers": [
                 "Mostafax\\Knet\\KnetServiceProvider"
+            ],
+            "migrations": [
+                "database/migrations"
             ]
         }
     },

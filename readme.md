@@ -48,15 +48,16 @@ to init new link
 use Mostafax\Knet\KnetController;
 ```
 ```php
- $data = [
+  $data = [
             'amount' => 20,
+            'order_id' => 200,
             'track_id' => rand(0, 9999),
             'udf1' => null,
             'udf2' => null,
             'udf3' => null,
             'udf4' => null,
             'udf5' => null
-        ];
+        ]; 
 ```
 ```php
 $KnetController = new KnetController();
