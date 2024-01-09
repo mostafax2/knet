@@ -5,7 +5,7 @@ namespace Mostafax\Knet;
 use Mostafax\Knet\Models\Payment;
 use Mostafax\Knet\Requests\KnetRequest;
 use Illuminate\Http\Request;
- 
+
 class Knet
 {
     private $url;
@@ -18,55 +18,53 @@ class Knet
     }
 
 
-    
+
     public function success(Request $request)
     {
-        $Knet = new Knet();
-        $data = $Knet->handleError($request->all());
-        $this->payment->where('track_id',$data['trackid'])->update([ 
-            'payment_id'=>$data['paymentid'],  
-            'tran_id'=>$data['tranid'],
-            'ref_id'=>$data['ref'],
-            'status'=>1,
-            'result'=>$data['result'],
-            'udf1'=>$data['udf1'],
-            'udf2'=>$data['udf2'],
-            'udf3'=>$data['udf3'],
-            'udf4'=>$data['udf4'],
-            'udf5'=>$data['udf5'],
+        $data = $this->handleError($request->all());
+        $this->payment->where('track_id', $data['trackid'])->update([
+            'payment_id' => $data['paymentid'],
+            'tran_id' => ($data['tranid']) ?? null,
+            'ref_id' => ($data['ref'])?? null,
+            'status' => 1,
+            'result' => ($data['result'])?? null,
+            'udf1' => ($data['udf1'])?? null,
+            'udf2' => ($data['udf2'])?? null,
+            'udf3' => ($data['udf3'])?? null,
+            'udf4' => ($data['udf4'])?? null,
+            'udf5' => ($data['udf5'])?? null,
         ]);
-          
+
         return view('knet::success', compact('data'));
     }
 
     public function error(Request $request)
-    {
-        $Knet = new Knet();
-       return $data = $Knet->handleError($request->all());
-       $this->payment->where('track_id',$data['trackid'])->update([ 
-            'payment_id'=>$data['paymentid'],  
-            'tran_id'=>$data['tranid'],
-            'ref_id'=>$data['ref'],
-            'status'=>2,
-            'result'=>$data['result'],
-            'udf1'=>$data['udf1'],
-            'udf2'=>$data['udf2'],
-            'udf3'=>$data['udf3'],
-            'udf4'=>$data['udf4'],
-            'udf5'=>$data['udf5'],
+    { 
+        $data = $this->handleError($request->all());
+        $this->payment->where('track_id', $data['trackid'])->update([
+            'payment_id' => $data['paymentid'],
+            'tran_id' => ($data['tranid']) ?? null,
+            'ref_id' => ($data['ref']) ?? null,
+            'status' => 2,
+            'result' => ($data['result']) ?? null,
+            'udf1' => ($data['udf1']) ?? null,
+            'udf2' => ($data['udf2']) ?? null,
+            'udf3' => ($data['udf3']) ?? null,
+            'udf4' => ($data['udf4']) ?? null,
+            'udf5' => ($data['udf5']) ?? null,
         ]);
         return view('knet::error', compact('data'));
     }
 
 
-    public function init(KnetRequest $request , $data  = null)
+    public function init(KnetRequest $request, $data  = null)
     {
         $data = (is_array($data)) ? $data : $request->all();
         $this->payment->create($data);
         return $this->pay($data);
     }
 
-   
+
     /**
      * @param array $data
      * @return string
@@ -94,20 +92,21 @@ class Knet
      * @return array
      */
     public function pay(array $data)
-    { 
+    {
         $param = $this->initPayment($data);
 
         $termResourceKey = env('PAYMENT_RESOURCE_KEY');
 
         $param = $this->encryptAES($param, $termResourceKey) . "&tranportalId=" . env('PAYMENT_TRANSPORT_ID') .
             "&responseURL=" . env('PAYMENT_SUCCESS_URL') . "&errorURL=" . env('PAYMENT_ERROR_URL');
- 
-        if ($param) { 
+
+        if ($param) {
             return ['success' => true, 'url' => $this->url . "&trandata=" . $param];
         }
 
         return ['success' => false, 'message' => trans('main.error')];
     }
+
 
     public function handleError($data)
     {

@@ -127,9 +127,12 @@ To run this project, you will need to add the following environment variables to
 `PAYMENT_SUCCESS_URL`
 
  
-## Badges
-
-Add badges from somewhere like: [shields.io](https://shields.io/)
+## requirment for payment callback
+```php
+    protected $except = [
+        'knet/*'
+    ];
+```
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
  

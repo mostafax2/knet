@@ -29,7 +29,7 @@ class KnetServiceProvider extends ServiceProvider
             __DIR__.'/database/migrations' => database_path('migrations/knet'),
         ], 'migrations');
         $this->publishes([
-            __DIR__.'/Requests' => app_path('Http/Requests/mostafax/knet'),
+            __DIR__.'/Requests' => app_path('Http/Requests/knet'),
         ], 'KnetRequest'); 
     }
 

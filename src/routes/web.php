@@ -10,12 +10,12 @@ Route::get(
 
 Route::any(
   'knet/success',
-  'mostafax\knet\Knet@success'
+  'Mostafax\Knet\Knet@success'
 );
 
 Route::any(
   'knet/error',
-  'mostafax\knet\Knet@error'
+  'Mostafax\Knet\Knet@error'
 );
 
  

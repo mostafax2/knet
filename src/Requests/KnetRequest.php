@@ -4,14 +4,33 @@ namespace Mostafax\Knet\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+use Illuminate\Contracts\Validation\Validator; 
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+
 class KnetRequest extends FormRequest
 {
+
+
+
+    protected function failedValidation(Validator $validator)
+    {
+        $response = new JsonResponse([
+            'status' => 'error',
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
+
+        throw new HttpResponseException($response);
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,13 +42,13 @@ class KnetRequest extends FormRequest
     {
         return [
             'amount'=>['required'],
-            'track_id'=>['required','gt:1','integer','unique:payment,track_id'], 
-            'udf1'=>['nullable','string'],
-            'udf2'=>['nullable','string'],
-            'udf3'=>['nullable','string'],
-            'udf4'=>['nullable','string'],
-            'udf5'=>['nullable','string'],
-            'order_id'=> ['nullable','integer|gt:1'], 
+            'track_id'=>['required','gt:1','integer','unique:payments,track_id'], 
+            'udf1'=>['required','nullable','string'],
+            'udf2'=>['required','nullable','string'],
+            'udf3'=>['required','nullable','string'],
+            'udf4'=>['required','nullable','string'],
+            'udf5'=>['required','nullable','string'],
+            'order_id'=> ['nullable','integer','gt:1'], 
         ];
     }
 }
