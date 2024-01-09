@@ -1,4 +1,4 @@
-<title> Payment Successful</title>
+<title> Payment {{ !empty($data['result']) ? $data['result'] : 'Faild' }}</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
@@ -6,7 +6,7 @@
 
 <div class="container">
     <h6 class="my-4 text-capitalize text-success fw-bold text-center">
-        Payment Successful
+        Payment {{ !empty($data['result']) ? $data['result'] : 'Faild' }}
     </h6>
     <div id="container">
         <p class="fs-14 text-dark text-center mb-4 fw-bolder">Payment Receipt</p>
