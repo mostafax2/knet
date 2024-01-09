@@ -127,7 +127,8 @@ To run this project, you will need to add the following environment variables to
 `PAYMENT_SUCCESS_URL`
 
  
-## requirment for payment callback
+## you may want to disable CSRF protection 
+In app/Http/Middleware/VerifyCsrfToken.php:
 ```php
     protected $except = [
         'knet/*'
