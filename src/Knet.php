@@ -59,7 +59,7 @@ class Knet
     }
 
 
-    public function init(KnetRequest $request , $data =null)
+    public function init(KnetRequest $request , $data  = null)
     {
         $data = (is_array($data)) ? $data : $request->all();
         $this->payment->create($data);
