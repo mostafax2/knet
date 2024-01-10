@@ -103,7 +103,6 @@ class Knet
         if ($param) {
             return ['success' => true, 'url' => $this->url . "&trandata=" . $param];
         }
-
         return ['success' => false, 'message' => trans('main.error')];
     }
 

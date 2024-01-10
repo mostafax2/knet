@@ -45,7 +45,7 @@ PAYMENT_SUCCESS_URL=http://YOURDOMAIN.test/knet/success
 to init new link  
 
 ```php
-use Mostafax\Knet\KnetController;
+use Mostafax\Knet\Knet;
 ```
 ```php
   $data = [
@@ -60,8 +60,8 @@ use Mostafax\Knet\KnetController;
         ]; 
 ```
 ```php
-$KnetController = new KnetController();
-$KnetController->init($data);
+$Knet = new Knet();
+$Knet->init($data);
 ``` 
 ## Call Back Reference
 
