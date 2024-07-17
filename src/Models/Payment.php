@@ -3,6 +3,7 @@
 namespace Mostafax\Knet\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mostafax\Knet\Enums\StatusEnum;
 
 class Payment extends Model
 {
@@ -23,4 +24,12 @@ class Payment extends Model
         'udf4',
         'udf5',
     ];
+
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+
+  
 }

@@ -3,6 +3,9 @@
 namespace Mostafax\Knet;
 
 use Illuminate\Support\ServiceProvider;
+use Mostafax\Knet\Services\knet;
+use Mostafax\Knet\Repositories\PaymentRepository;
+use Mostafax\Knet\Models\Payment;
 
 class KnetServiceProvider extends ServiceProvider
 {
@@ -12,6 +15,12 @@ class KnetServiceProvider extends ServiceProvider
     public function register(): void
     {
         include __DIR__.'/routes/web.php'; 
+        $this->app->singleton(knet::class, function ($app) {
+            return new knet();
+        });
+        $this->app->bind(PaymentRepository::class, function ($app) {
+            return new PaymentRepository(new Payment());
+        });
         
     }
 
@@ -31,6 +40,7 @@ class KnetServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Requests' => app_path('Http/Requests/knet'),
         ], 'KnetRequest'); 
+        
     }
 
 
