@@ -72,17 +72,6 @@ class KnetController
         return view("knet::form");
     }
 
-
-    public function initPayment(array $data)
-    {
-        // Handle init payment logic
-    }
-
-    public function pay(array $data)
-    {
-        // Handle pay logic
-    }
-
     public function handleError($data)
     {
         $ResTranData = isset($data['trandata']) && !empty($data['trandata']) ? $data['trandata'] : '';
@@ -97,15 +86,110 @@ class KnetController
         return $payment;
     }
 
-    public function checkPayment(array $data): array
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function checkPayment($track_id, $amount = null)
     {
-        // Handle check payment logic
+
+        $payment = $this->payment->where(['track_id'=>$track_id , "amount"=>$amount])->first();
+        if(!$payment) {
+            return false;
+        }
+        $paymentStatus=$this->knetService->check($track_id,$amount);
+        $paymentStatus = json_decode(json_encode($paymentStatus), true);
+         // Check if the request was successful
+         if ($paymentStatus['status'] == 1) {
+            // Process the payment status as needed
+            return view('knet::status', ['status' => $paymentStatus['data']]);
+        } else {
+            // Handle the error
+            return view('knet::status', ['status' => 'Failed to retrieve payment status.']);
+        }
+
+
+
+        // $termResourceKey = env('PAYMENT_RESOURCE_KEY');
+        // if ($data['trandata'] != '') {
+        //     $decryptedData = $this->decrypt($ResTranData, $termResourceKey);
+        //     parse_str($decryptedData, $payData);
+        // } else {
+        //     $payData = $data;
+        // }
+
+        // Log::info('pay Data: ', $payData);
+        // $this->create_log('payment', 'pay Data', 'payment', $payData['udf1'], 'client', $payData['udf2'], json_encode($payData));
+
+        // if ($payData['result'] != 'CAPTURED') {
+        //     Payment::where('id', $payData['udf1'])->update([
+        //         'payment_id' => $payData['paymentid'], 'updated_at' => date('Y-m-d H:i:s'), 'pay' => -1
+        //     ]);
+        //     return ['success' => 0, 'data' => $payData];
+        // } else {
+        //     //            $payment_date = $payData['postdate'];
+        //     //            $payment_date = date('Y').'-'.substr($payment_date, 0, 2).'-'.substr($payment_date, 2, 2) ?? date('Y-m-d');
+
+        //     $result = [
+        //         'id' => $payData['udf1'],
+        //         'result' => $payData['result'],
+        //         'track_id' => $payData['trackid'],
+        //         'trans_id' => $payData['tranid'],
+        //         'payment_id' => $payData['paymentid'],
+        //         'auth' => $payData['auth'],
+        //         'amount' => $payData['amt'],
+        //         'postdate' => $payData['postdate'],
+        //         'ref' => $payData['ref']
+        //     ];
+
+        //     //                dd($payData['udf5']);
+        //     if ($payData['udf5'] !== null) {
+        //         $instalment = Instalment::with('client')->find($payData['udf5']);
+        //         if ($instalment) {
+        //             $instalment->update(['is_paid' => 1]);
+        //             // Push Notification to Admin
+        //             $users = User::whereNotNull('email_verified_at')->get();
+        //             foreach ($users as $user) {
+        //                 $user->notify(new NewInstallment($instalment));
+        //             }
+
+        //             //                    if (isset($instalment->client)) {
+        //             //                        $order['paymentData'] = $result;
+        //             //                        $order['name'] = $instalment->client->name ?? '';
+        //             //                        $order['subject'] = 'New Installment Request';
+        //             //                        $order['date'] = date('Y-m-d H:i:s');
+        //             //                        Mail::to($instalment->client->email)->send(new newInstallmentReceipt($order));
+        //             //                    }
+
+        //         }
+        //     }
+
+
+        //     $pay = Payment::where('id', $result['id'])->update([
+        //         'payment_id' => $result['payment_id'],
+        //         'updated_at' => date('Y-m-d H:i:s'),
+        //         'pay' => 1,
+        //         'post_date' => $payData['postdate'],
+        //         'tran_id' => $result['trans_id'],
+        //         'auth' => $result['auth'],
+        //         'ref' => $result['ref'],
+        //     ]);
+        //     Log::info('update Payment in system Easybuy after paid');
+        //     $this->create_log('payment', 'update Payment in system Easybuy after paid', 'payment', $result['id'], 'client', $payData['udf2'], Null);
+
+
+        //     try {
+        //         //                $payment = Payment::where('id', $result['id'])->first();
+        //         //    (new Controller())->updatePaymentOracle($payment, $payData);
+        //     } catch (\Exception $e) {
+        //         Log::info($e);
+        //     }
+
+        //     return ['success' => 1, 'data' => $result];
+        // }
     }
 
-    public function check($track_id, $pay_id, $amount = null)
-    {
-        // Handle check logic
-    }
+
 
     // Add other methods as needed
 }

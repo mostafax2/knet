@@ -1,7 +1,7 @@
 <?php
 
 namespace Mostafax\Knet\Services;
-
+use GuzzleHttp\Client;
 class knet
 {
     private $url;
@@ -32,6 +32,8 @@ class knet
         return ['success' => false, 'message' => trans('main.error')];
     }
 
+
+
         /**
      * @param array $data
      * @return string
@@ -52,6 +54,40 @@ class knet
         return $ReqTranportalId . "&" . $ReqTranportalPassword . "&" . $ReqAction . "&" . $ReqLangid . "&" .
             $ReqCurrency . "&" . $ReqAmount . "&" . $ReqResponseUrl . "&" . $ReqErrorUrl . "&" . $ReqTrackId . "&" .
             $ReqUdf;
+    }
+
+
+    public function check($track_id, $amount)
+    {
+        $knetApiUrl =  env('PAYMENT_CHECK');
+        $xmlRequest = '<id>'.env('PAYMENT_TRANSPORT_ID').'</id><password>'.env('PAYMENT_TRANSPORT_PASSWORD').'</password><action>8</action><amt>' . $amount . '</amt><transid>' . $track_id . '</transid><udf5>TrackID</udf5><trackid>' . $track_id . '</trackid>';
+
+        // Create a new Guzzle HTTP client
+       $client = new Client();
+       // Send the request to the Knet API
+       $response = $client->request('POST', $knetApiUrl, [
+           'headers' => [
+               'Content-Type' => 'application/xml',
+               'Accept' => 'application/xml',
+               'Content-length: ' . strlen($xmlRequest)
+           ],
+           'body' => $xmlRequest,
+       ]);
+        // Check if the request was successful
+        if ($response->getStatusCode() == 200) {
+            $xmlResponse = $response->getBody()->getContents();
+            $xmlResponse = "<response>" . $xmlResponse . "</response>";
+            $paymentStatus = simplexml_load_string($xmlResponse);
+            return [
+                'status' => 1,
+                'data' => $paymentStatus
+            ];
+        } else {
+            return [
+                'status' => 0,
+                'data' => []
+            ];
+        }
     }
 
     function encryptAES($str, $key): string

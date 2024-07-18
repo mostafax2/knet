@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class Knet
 {
-   
+
 
     public function __construct()
     {
@@ -38,7 +38,7 @@ class Knet
     }
 
     public function error(Request $request)
-    { 
+    {
         $data = $this->handleError($request->all());
         $this->payment->where('track_id', $data['trackid'])->update([
             'payment_id' => $data['paymentid'],

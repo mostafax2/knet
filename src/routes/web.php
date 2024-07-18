@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+
+Route::get(
+    'knet/check/{paymentId}/{amount}',
+     'Mostafax\Knet\KnetController@checkPayment'
+     );
+
+
 Route::get(
   '/knet/init',
   'Mostafax\Knet\KnetController@init'
